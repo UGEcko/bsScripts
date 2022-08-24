@@ -1,5 +1,5 @@
 import { Environment} from "https://deno.land/x/remapper@2.1.0/src/mod.ts"; //
-export function EnvironmentEcko() { // Dont Delete this function
+export function Env() { // Dont Delete this function
 
 
 // I was even kind enough to add the most non-efficient functions known to man.
