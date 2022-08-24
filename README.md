@@ -12,4 +12,10 @@ Functions
 
 Scripts
 
+
+---                                               
+
+If you want to try organzization, head [here](https://github.com/UGEcko/bsScripts/tree/org)
 If any of the functions, scripts, or hyperlinks in this ReadMe stop working, please contact me on discord UG-Ecko#5794
+
+
