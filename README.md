@@ -7,6 +7,8 @@ ReMapper [Docs](https://github.com/Swifter1243/ReMapper/blob/master/DOCS.md)
 
 ReMapper ([Deno](https://deno.land/x/remapper))
 
+[ReMapper Brief Docs](https://github.com/UGEcko/bsScripts/wiki) (Ecko)
+
 
 Functions 
 
