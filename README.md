@@ -9,4 +9,6 @@ Example:
 
  
 
-If you want to try this out, I have a "template" in the branch.
+If you want to try this out, I have a "template" in the repo.
+
+["Template"](https://github.com/UGEcko/bsScripts/tree/org/OrgMapFolder)
