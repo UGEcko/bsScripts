@@ -10,6 +10,8 @@ ReMapper ([Deno](https://deno.land/x/remapper))
 [ReMapper Brief Docs](https://github.com/UGEcko/bsScripts/wiki) (Ecko)
 
 
+This will not contain a template file for remapper use, because the RM Map tool already sets it up.
+
 Functions 
 
 Scripts
