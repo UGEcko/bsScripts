@@ -1,0 +1,17 @@
+// Credits go to swiffer 
+const lasers = 2; // How much lasers are you making?
+const laserTracks: string[] = ["Laser"]; // Input blender material in the array, say for like: ["Laser", "Laser2"] (Please pool your materials, this is just an example. )
+const laserEnv = new Environment(ENV.BTS.SOLID_LASER.ID, "Regex") // Find BTS Laser
+laserEnv.lightID = 100; // 100 would be the light id for 1 laser, if the "lasers" constant is 10, your light ids will be 100-109
+for (let i = 1; i <= lasers; i++) laserTracks.push(`laser${i}`); // Stuff I dont understand, swiffer brain here
+
+// apg
+scene.addPrimaryGroups( 
+  laserTracks,
+  laserEnv,
+  ENV.BTS.SOLID_LASER.SCALE,
+  ENV.BTS.SOLID_LASER.ANCHOR
+);
+
+// I tried explaining everything here :)
+
