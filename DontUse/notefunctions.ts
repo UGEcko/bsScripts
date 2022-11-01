@@ -82,15 +82,24 @@ export function dropFX(start: number, end: number, offset: number, beatOffset: a
         })
 
     }
-
-
-
     // Personal Settings:
-    // Offset: 1
+    // Offset:
     // Ease: "easeOutQuad"
 }
 
+export function bResetFX(start:number , end:number , offset:number, beatOffset: any, ease?: EASE) {
+    const startbeat = start + beatOffset
+    const endbeat = end + beatOffset
+    notesBetween(startbeat,endbeat, x => {
+        if (x.type == 0 || x.type == 1){
+            x.offset = offset
+            x.animate.position = [[0,-5,0,0, ease]]
+            x.animate.localRotation = [[90,0,0,0],[0,0,0,0.25, ease]]
+        }
+        if (x.type == 3) {
+            x.offset = offset
+            x.animate.localRotation = [[0,0,0,0],[0,360,0,0.6]]
+        }
 
-    
-
-    
+    })
+}
