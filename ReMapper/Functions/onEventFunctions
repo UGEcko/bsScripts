@@ -1,0 +1,22 @@
+//REQUIRED IMPORTS: EVENTGROUP , WALL, eventsBetween
+
+export function wallOnEvent(start: number, end: number, lightType: EVENTGROUP, data?: (data: Wall ) => void) {
+        eventsBetween(start,end, x=> {
+            if(x.type === lightType) {
+                const w = new Wall(x.time)
+                if (data) data(w)
+                w.push()
+            }
+        })
+}
+
+
+export function eventOnEvent(start: number, end: number, lightType: EVENTGROUP, data?: (data: CustomEvent ) => void) {
+    eventsBetween(start,end, x=> {
+        if(x.type === lightType) {
+            const c = new CustomEvent(x.time)
+            if (data) data(c)
+            c.push()
+        }
+    })
+}
