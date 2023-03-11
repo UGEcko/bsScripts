@@ -1,3 +1,4 @@
+```ts
 // Credits go to swiffer 
 const lasers = 2; // How much lasers are you making?
 const laserTracks: string[] = []; 
@@ -36,3 +37,4 @@ const lasers = 80; // Amount of lasers
       laserTracks,
       laserEnv
     );
+```
