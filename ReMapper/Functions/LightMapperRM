@@ -1,6 +1,6 @@
 // Credits go to swiffer 
 const lasers = 2; // How much lasers are you making?
-const laserTracks: string[] = ["Laser"]; // Input blender material in the array, say for like: ["Laser", "Laser2"] (Please pool your materials, this is just an example. )
+const laserTracks: string[] = []; 
 const laserEnv = new Environment(ENV.BTS.SOLID_LASER.ID, "Regex") // Find BTS Laser
 laserEnv.lightID = 100; // 100 would be the light id for 1 laser, if the "lasers" constant is 10, your light ids will be 100-109
 for (let i = 1; i <= lasers; i++) laserTracks.push(`laser${i}`); // Stuff I dont understand, swiffer brain here
@@ -13,5 +13,26 @@ scene.addPrimaryGroups(
   ENV.BTS.SOLID_LASER.ANCHOR
 );
 
-// I tried explaining everything here :)
+// RM 3.1.1 GEO UPDATE:
 
+map.geoMaterials["SolidLight"] = {
+    shader: "OpaqueLight",
+    color: [0,0,0],
+    shaderKeywords: []
+}
+const laserGeo = new Geometry("Cube", "SolidLight") // Use Geometry, Cube, and the SOLIDLIGHT GeoMaterial.
+const lasers = 80; // Amount of lasers 
+    const laserTracks: string[] = [] 
+    const laserEnv = laserGeo
+    laserEnv.components.TubeBloomPrePassLight = { // Example with what you can do with laserGEO.
+        colorAlphaMultiplier: 0.5,
+        bloomFogIntensityMultiplier: 0.5
+    }
+    laserEnv.lightID = 300; // Starting lightID
+    laserEnv.lightType = 1 // LightType / Ex: CENTERLASERS. You may also use EVENTGROUP instead of integers.
+    for (let i = 0; i <= lasers; i++) laserTracks.push(`light${i}`); 
+
+    scene.addPrimaryGroups( 
+      laserTracks,
+      laserEnv
+    );
