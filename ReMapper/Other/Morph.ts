@@ -1,19 +1,15 @@
-// Honestly I forgot all of the imports
+import { Vec2, Vec3, arrMul, arrAdd, Geometry } from "https://deno.land/x/remapper@3.1.2/src/mod.ts"
+import { arrRound } from "https://raw.githubusercontent.com/UGEcko/bsScripts/a9dae46b21e2eb5bc75fcd6a6923351495eb2713/ReMapper/Functions/arrRound.ts"
+export type axis = "X" | "Y" | "Z"
 function filterAndExtractRandom(datFilePath: string, filterSubstring: string): SceneObject | undefined {
     try {
-      // Read the JSON file
       const jsonData = JSON.parse(Deno.readTextFileSync(datFilePath))
       const objects: SceneObject[] = jsonData.objects
-  
-      // Filter objects with the "spawner" track
       const spawnerObjects = objects.filter(obj => obj.track === filterSubstring)
   
       if (spawnerObjects.length > 0) {
-        // Randomly select one object from the filtered list
         const randomIndex = Math.floor(Math.random() * spawnerObjects.length)
         const randomSpawnerObject = spawnerObjects[randomIndex]
-  
-        // Extract and return the position, rotation, and scale
         const { pos, rot, scale, track } = randomSpawnerObject
         return { pos, rot, scale, track }
       } else {
@@ -22,61 +18,40 @@ function filterAndExtractRandom(datFilePath: string, filterSubstring: string): S
     } catch (error) {
       console.error('Error reading or parsing JSON data:', error)
     }
-  
     return undefined
   }
+function calculateScaleOffset(baseScale: Vec3, offsetScale: Vec3, axisTarget: axis) {
+  // calc scale
+const objScale = arrAdd(baseScale, offsetScale)
 
-
-  export function roundArray(arr: number[], decimalPlaces: number): any[] { // That objectToTrack 
-    return arr.map((x: any) => {
-      if (Array.isArray(x)) {
-        return roundArray(x, decimalPlaces)
-      } else if (typeof x === 'number') {
-        return Number(x.toFixed(decimalPlaces))
-      } else {
-        return x
-      }
-    });
+  // Return proper axis offset
+  if(axisTarget == "X") {
+    return objScale[0]
+  } else if(axisTarget == "Y") {
+    return objScale[1]
+  } else if(axisTarget == "Z") {
+    return objScale[2]
   }
-// Morph Function: Animate incoming notes that have a specific track to spawn and morph from random blender environment cubes 
-// Start with spawning, and animation, then move on to fx like dissolving, or scaling, aswell as smoothing anim.
-
-// Using: notesBetween , 
+}
+// The real sauce
 export function morphEnvNote(startEnd: Vec2, NoteEnvTrack: string[], filePath: string) {
     // Set all constants
     const start = startEnd[0]
     const end = startEnd[1]
     const noteTrack = NoteEnvTrack[0]
     const envTrack = NoteEnvTrack[1]
+    const envPos = filterAndExtractRandom(filePath, envTrack)
+    const xyzPos:Vec3 = envPos?.pos
+    const xyzRot:Vec3 = envPos?.rot
+    const xyzScale:Vec3 = envPos?.scale
 
-const scalar = 1.65
-    notesBetween(start,end, x => {
-        x.interactable = false
-        x.noteGravity = false
-        x.spawnEffect = false
-        x.noteLook = false
-        x.x = 1
-        x.y = 0
-        if(x.track.value == noteTrack) {
-          const envPos = filterAndExtractRandom(filePath, envTrack)
-          const xyzPos:number[] = envPos?.pos
-          const xyzRot:number[] = envPos?.rot
-          const xyzScale:number[] = envPos?.scale
-          
-            if (envPos) {
-                x.animate.position = [[xyzPos[0]*scalar,xyzPos[1]*scalar,xyzPos[2]*scalar,0],[0,0,0,0.35,"easeInOutExpo"]]// assuming note scale is [1,1,1]
-                x.animate.localRotation = [[xyzRot[0],xyzRot[1],xyzRot[2],0], [0,0,0,0.35, "easeInOutExpo"]]
-              }
-            else {
-              console.error(`Position/Rot/Scale not found or applied correctly`)
-            }
-        }
-    })
-
+    const position = arrMul(xyzPos, 1)
+    const localRotation = arrMul(xyzRot, 1)
+    const scale = arrMul(xyzScale, 5)
+    const a = new Geometry("Cube")
+    const scaleOff = calculateScaleOffset(xyzScale, scale, "Y")
+    a.position = [position[0], position[1]+scaleOff/2, position[2]]
+    a.localRotation = localRotation
+    a.scale = scale
+    a.push()
 }
-
-//! Notes
-/* I kinda gave up on this because of beatsaber and blender positioning differences. It still works, just the positioning is really scuffed, 
-the scalar constant is the closest ive gotten to the actual position before just giving up. Feel free to pr idc 
-
-The original idea was to get the proper positions, and scale of both the env object and note so the note sits perfectly on top of the env piece. Why? I was bored asf and at 3am it sounded cool. */
